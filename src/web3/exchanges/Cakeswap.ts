@@ -71,7 +71,8 @@ export default class Cakeswap implements IExchange {
       await this.web3Helper.estimateGas(config);
       const txHash = await this.web3Helper.send(config);
       return {
-        txHash: txHash as string,
+        txHash: txHash.txHash,
+        status: txHash.status,
         data: data,
         block: currentBlock,
         error: null,
@@ -94,7 +95,8 @@ export default class Cakeswap implements IExchange {
       await this.web3Helper.estimateGas(config);
       const txHash = await this.web3Helper.send(config);
       return {
-        txHash: txHash as string,
+        txHash: txHash.txHash,
+        status: txHash.status,
         data: data,
         block: currentBlock,
         error: null,

@@ -96,7 +96,7 @@ export default class Bep20 {
       await this.web3Helper.estimateGas(config);
       const txHash = await this.web3Helper.send(config);
       Logger.getInstance().info(`BEP20 Approval txHash - ${tokenAddress} - ${txHash}`);
-      return txHash as string;
+      return txHash.txHash;
     } catch (err: any) {
       Logger.getInstance().error(`BEP20 Approval - ${err.message}`);
     }

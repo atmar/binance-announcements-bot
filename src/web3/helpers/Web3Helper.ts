@@ -10,19 +10,20 @@ export default class Web3Helper {
     this.web3 = Web3Instance.getInstance();
   }
 
-  async send(transactionConfig: TransactionConfig) {
+  async send(transactionConfig: TransactionConfig): Promise<{txHash: string, status: boolean}> {
     return new Promise(async (resolve, reject) => {
       const signedTransaction = await this.web3.eth.accounts.signTransaction(transactionConfig, Web3Config.config.privateKey);
       if (!signedTransaction.rawTransaction) throw new Error("Error while signing transaction");
       this.web3.eth
         .sendSignedTransaction(signedTransaction.rawTransaction)
-        .on("transactionHash", (txHash: any) => {
-          resolve(txHash);
-          return txHash;
-        })
         .on("error", (error: any) => {
           reject(error);
           return;
+        }).then((receipt: any) => {
+          resolve({
+            txHash: receipt.transactionHash,
+            status: receipt.status,
+          });
         });
     });
   }
