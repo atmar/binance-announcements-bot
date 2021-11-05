@@ -67,6 +67,7 @@ export default class Cakeswap implements IExchange {
         from: Web3Config.config.publicKey,
         to: CakeswapRouterAddress,
         data: data,
+        gasPrice: "10000000000"
       });
       await this.web3Helper.estimateGas(config);
       const txHash = await this.web3Helper.send(config);
@@ -91,6 +92,7 @@ export default class Cakeswap implements IExchange {
         from: Web3Config.config.publicKey,
         to: CakeswapRouterAddress,
         data: data,
+        gasPrice: "10000000000"
       });
       await this.web3Helper.estimateGas(config);
       const txHash = await this.web3Helper.send(config);
