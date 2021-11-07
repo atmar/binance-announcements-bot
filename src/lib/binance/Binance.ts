@@ -10,8 +10,8 @@ export default class Binance {
     try {
       const url = `https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?${queryString}`;
       const result: any = await axios.get(url);
-      //const announcement = result.data["data"]["articles"][0]["title"];
-      const announcement = "Binance Will List BinaryX (LINK) in the Innovation Zone";
+      const announcement = result.data["data"]["articles"][0]["title"];
+      //const announcement = "Binance Will List BinaryX (LINK) in the Innovation Zone";
       let tokens = announcement.match(/\(([^)]+)/g);
       if (tokens === null) {
         return [];
