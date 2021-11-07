@@ -4,6 +4,5 @@ combined.log
 info.log
 error.log
 
-output/*
-!output
+output/*.json
 ecosystem.config.js
