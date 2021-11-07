@@ -86,7 +86,7 @@ export default class PancakeswapProcessor {
 
     //TODO: save the transaction in json file
     if (!AppConfig.config.testMode) {
-      await this.approveToken(sellToken.address, sellAmount);
+      await this.approveToken(sellToken.address, new BigNumber(sellAmount));
       const transfer = await this.sellTokenOnCakeswap(bnbToReceiveTotal, sellAmount, sellToken.address, bnbToken.address);
       if (transfer.error === null) {
         transaction = { ...transaction, success: transfer.status, tx: transfer.txHash };
