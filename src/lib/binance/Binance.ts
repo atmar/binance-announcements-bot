@@ -1,9 +1,11 @@
 import axios from "axios";
 import _ from "lodash";
 import moment from "moment";
+import Logger from "singletons/Logger";
 
 export default class Binance {
   static async checkAnnouncements(): Promise<string[]> {
+    Logger.getInstance().info("Checking Binance announcements");
     const queryString = this.randomizeQuery();
     const url = `https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?${queryString}`;
     const result: any = await axios.get(url);
