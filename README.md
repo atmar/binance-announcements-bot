@@ -52,7 +52,7 @@ If your transaction failed, you must check your transactions.json log. There you
 
 
 # IMPORTANT Before buying
-This bot uses WBNB, not BNB. You must have WBNB in your wallet in order to buy and sell tokens. Pancakeswap must also be approved to sell/buy WBNB. If you never did a transaction before with WBNB on pancakeswap you must go to Pancakeswap, click on a random token to trade and set your WNBN in the sell position. Pancakeswap will ask you to **approve** Pancakeswap to use your WBNB token. Click on that button and run the transaction. Now pancakeswap is approved to take care of your WBNB. If you do not see the approve button you're already good to go.
+This bot uses WBNB, not BNB. You must have WBNB in your wallet in order to buy and sell tokens. Pancakeswap must also be approved to sell/buy WBNB. If you never did a transaction before with WBNB on pancakeswap you must go to Pancakeswap, click on a random token to trade and set your WBNB in the sell position. Pancakeswap will ask you to **approve** Pancakeswap to use your WBNB token. Click on that button and run the transaction. Now pancakeswap is approved to take care of your WBNB. If you do not see the approve button you're already good to go.
 
 NOTE: If you really want to be sure your WBNB is approved to use. Go to https://bscscan.com/token/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c#readContract , go to Read Contract, go to allowance.
 In allowance set the first input address to your public address and the second input address to 0x10ED43C718714eb63d5aA57B78B54704E256024E . If the result is greater than 0 you're good to go!
