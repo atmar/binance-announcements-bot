@@ -5,3 +5,5 @@ info.log
 error.log
 
 output/*
+!output
+ecosystem.config.js
