@@ -12,6 +12,7 @@ import { now } from "moment";
 import Web3Helper from "web3/helpers/Web3Helper";
 import Web3Errors from "web3/helpers/Web3Errors";
 import { TokenTransfer } from "interfaces/web3/exchanges/cakeswap/TokenTransfer";
+import { MarketConfig } from "config/market.config";
 
 export default class Cakeswap implements IExchange {
   private web3: Web3;
@@ -60,7 +61,8 @@ export default class Cakeswap implements IExchange {
 
   async buyTokens(sellAmount: BigNumber, expectedAmount: BigNumber, buyAddress: string, sellAddress: string): Promise<TokenTransfer> {
     const contract = new this.web3.eth.Contract(RouterAbi as AbiItem[], CakeswapRouterAddress);
-    const data = contract.methods.swapExactTokensForTokensSupportingFeeOnTransferTokens(sellAmount, expectedAmount, [sellAddress, buyAddress], Web3Config.config.publicKey, now() + 1).encodeABI();
+    const slippage = (100 - MarketConfig.config.slippage) / 100;
+    const data = contract.methods.swapExactTokensForTokensSupportingFeeOnTransferTokens(sellAmount, expectedAmount.multipliedBy(slippage).toFixed(0), [sellAddress, buyAddress], Web3Config.config.publicKey, now() + 1).encodeABI();
     const currentBlock = await this.web3.eth.getBlockNumber();
     try {
       const config = await this.web3Helper.getTransactionConfig({
@@ -85,7 +87,8 @@ export default class Cakeswap implements IExchange {
 
   async sellTokens(sellAmount: BigNumber, expectedAmount: BigNumber, buyAddress: string, sellAddress: string): Promise<TokenTransfer> {
     const contract = new this.web3.eth.Contract(RouterAbi as AbiItem[], CakeswapRouterAddress);
-    const data = contract.methods.swapExactTokensForTokensSupportingFeeOnTransferTokens(sellAmount, expectedAmount, [sellAddress, buyAddress], Web3Config.config.publicKey, now() + 1).encodeABI();
+    const slippage = (100 - MarketConfig.config.slippage) / 100;
+    const data = contract.methods.swapExactTokensForTokensSupportingFeeOnTransferTokens(sellAmount, expectedAmount.multipliedBy(slippage).toFixed(0), [sellAddress, buyAddress], Web3Config.config.publicKey, now() + 1).encodeABI();
     const currentBlock = await this.web3.eth.getBlockNumber();
     try {
       const config = await this.web3Helper.getTransactionConfig({
