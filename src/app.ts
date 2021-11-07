@@ -13,6 +13,7 @@ import { promises as fs } from "fs";
 import { TokenBought } from "interfaces/models/TokenBought";
 import moment from "moment";
 import { Token } from "interfaces/models/Token";
+import Logger from "singletons/Logger";
 
 gracefulFs.gracefulify(realFs);
 cron;
@@ -63,6 +64,7 @@ async function addTokenToList(tokenSymbol: string) {
   let tokensBoughtAll: TokenBought[] = input.toString() !== "" ? JSON.parse(input.toString()) : [];
   let tokenBought: TokenBought = tokensBoughtAll.find((token: TokenBought) => token.token === tokenSymbol);
   if (tokenBought === undefined) {
+    Logger.getInstance().info("New coin found on announcements - " + tokenSymbol)
     tokenBought = {
       token: tokenSymbol,
       success_bought: false,
@@ -94,6 +96,7 @@ async function processToken(tokenSymbol: string) {
   if (tokenBought.attempts <= MarketConfig.config.attempts) {
     if (tokenBought.status === "buying") {
       if (!tokenBought.success_bought) {
+        Logger.getInstance().info("Buying coin - " + tokenSymbol)
         const success = await cakeswapProcessor.buy(bnbToken, buyToken);
         let attempts = tokenBought.attempts;
         if (!success) {
@@ -109,6 +112,7 @@ async function processToken(tokenSymbol: string) {
       //TODO wait X amount oif minutes
     } else if (tokenBought.status === "selling" && tokenBought.created_at <= moment().subtract(MarketConfig.config.minuteWaitToSell, "m").format("YYYY-MM-DD HH:mm:ss")) {
       if (!tokenBought.success_sold) {
+        Logger.getInstance().info("Selling coin - " + tokenSymbol)
         const success = await cakeswapProcessor.sell(bnbToken, buyToken);
         let attempts = tokenBought.attempts;
         if (!success) {

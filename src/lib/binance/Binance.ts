@@ -4,14 +4,47 @@ import moment from "moment";
 
 export default class Binance {
   static async checkAnnouncements(): Promise<string[]> {
-    const { data }: any = await axios.get(`https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=15&rnd=${moment().unix().toString()}`);
-    const announcement = data['data']['articles'][0]['title'];
+    const queryString = this.randomizeQuery();
+    const url = `https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?${queryString}`;
+    const result: any = await axios.get(url);
+    const announcement = result.data["data"]["articles"][0]["title"];
     //const announcement = "Binance Will List BinaryX (ADA) in the Innovation Zone";
-    const tokens = announcement.match(/\(([^)]+)/g).map((token: any) => {
+    let tokens = announcement.match(/\(([^)]+)/g);
+    if (tokens === null) {
+      return [];
+    }
+    tokens = tokens.map((token: any) => {
       return token.replace(")", "").replace("(", "");
     });
     return _.uniqBy(tokens, function (e: string) {
       return e;
     });
+  }
+
+  private static randomizeQuery(): string {
+    let queries = [
+      {
+        query: "catalogId",
+        value: 48,
+      },
+      {
+        query: "pageNo",
+        value: 1,
+      },
+      {
+        query: "pageSize",
+        value: 18,
+      },
+      {
+        query: "rnd",
+        value: moment().unix().toString(),
+      },
+      {
+        query: (Math.random() + 1).toString(36).substring(7),
+        value: (Math.random() + 1).toString(36).substring(7),
+      }
+    ];
+    queries = _.shuffle(queries);
+    return queries.map((query) => `${query.query}=${query.value}`).join("&");
   }
 }
